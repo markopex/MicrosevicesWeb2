@@ -14,11 +14,11 @@ namespace ApiGateway
     public class Startup
     {
         public IConfiguration OcelotConfiguration { get; }
-        public Startup(IConfiguration configuration)
+        public Startup(Microsoft.Extensions.Hosting.IHostingEnvironment env)
         {
-            Configuration = configuration;
-            var builder = new ConfigurationBuilder();
-            builder//.SetBasePath(env.ContentRootPath)
+            var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
+            builder.SetBasePath(env.ContentRootPath)
+                   //add configuration.json  
                    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
                    .AddEnvironmentVariables();
 

@@ -13,4 +13,3 @@ namespace ProductApi.Models
         public string Description { get; set; }
     }
 }
-}
