@@ -1,5 +1,12 @@
 using AutoMapper;
-using Backend.Mapping;
+using Backend.Infrastructure;
+using EmailService;
+using EmailService.Interfaces;
+using EmailService.Services;
+using IdentityApi.Infrastructure;
+using IdentityApi.Interfaces;
+using IdentityApi.Mapping;
+using IdentityApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,16 +19,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProductApi.Infrastructure;
-using ProductApi.Interfaces;
-using ProductApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductApi
+namespace IdentityApi
 {
     public class Startup
     {
@@ -37,9 +41,13 @@ namespace ProductApi
         {
 
             services.AddControllers();
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "IdentityApi", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -64,8 +72,11 @@ namespace ProductApi
                     }
                 });
             });
-            services.AddDbContext<ProductsDbContext>(options =>
+
+
+            services.AddDbContext<IdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+
 
             //Dodajemo semu autentifikacije i podesavamo da se radi o JWT beareru
             services.AddAuthentication(opt => {
@@ -92,7 +103,8 @@ namespace ProductApi
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,15 +114,15 @@ namespace ProductApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityApi v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthorization(); 
             app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
