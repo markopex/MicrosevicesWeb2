@@ -31,7 +31,7 @@ namespace ProductApi.Controllers
         }
 
         [HttpPost]
-        //[Authorize(role = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddProduct([FromBody] ProductDto productDto)
         {
             return Ok(_productService.AddProduct(productDto));
