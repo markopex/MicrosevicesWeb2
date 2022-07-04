@@ -1,0 +1,11 @@
+<p-toast></p-toast>
+<p-card class="product">
+    <img style="margin: 2em;" src="https://cdn.iconscout.com/icon/free/png-256/fast-food-1851561-1569286.png"/>
+    <h2 class="text-center">{{product.name}}</h2>
+    <h4 class="text-center">{{product.ingredients}}</h4>
+    <div class="product-price-div"  *ngIf="role == 'USER'">
+        <h3>{{product?.price}} RSD</h3>
+        <button pButton pRipple type="button" icon="pi pi-shopping-cart" (click)="addToBasket()" class="p-button-rounded"></button>
+    </div>
+    <h3 class="text-center" *ngIf="role != 'USER'">{{product?.price}} RSD</h3>
+</p-card>

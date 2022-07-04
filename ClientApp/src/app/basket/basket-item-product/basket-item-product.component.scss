@@ -1,0 +1,9 @@
+.item {
+    display: flex;
+}
+.item-details{
+    margin-left: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
