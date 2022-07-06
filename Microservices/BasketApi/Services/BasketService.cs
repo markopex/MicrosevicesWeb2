@@ -55,7 +55,7 @@ namespace BasketApi.Services
                 Id = email,
                 BasketItems = dto.BasketItems
             };
-            baskets.Upsert(email.GetHashCode(), basket);
+            baskets.Upsert(email, basket);
             db.Commit();
             return basket;
         }

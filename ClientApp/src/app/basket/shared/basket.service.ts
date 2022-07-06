@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BasketItem } from './basket-item.model';
 import { Basket } from './basket.model';
@@ -12,6 +12,8 @@ import { Checkout } from './checkout.model';
 export class BasketService {
 
   constructor( private http: HttpClient) { }
+
+  public totalObservable = new BehaviorSubject<number>(0);
 
   setBasket(basket: Basket) :Observable<Object> {
     return this.http.post<Object>(environment.serverUrl + '/basket', basket);

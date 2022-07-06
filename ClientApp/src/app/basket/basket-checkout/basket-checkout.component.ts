@@ -11,7 +11,6 @@ import { BasketService } from '../shared/basket.service';
 })
 export class BasketCheckoutComponent implements OnInit {
 
-  @Input()
   total: number = 0;
 
   isSending = false;
@@ -24,6 +23,11 @@ export class BasketCheckoutComponent implements OnInit {
   constructor(private basketService: BasketService, private messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.basketService.totalObservable.subscribe(
+      data => {
+        this.total = data;
+      }
+    )
   }
 
   checkout(){
@@ -34,7 +38,7 @@ export class BasketCheckoutComponent implements OnInit {
       },
       error =>{
         // show error
-        
+
       }
     )
   }
