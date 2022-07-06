@@ -30,14 +30,12 @@ namespace IdentityApi.Controllers
             var userEmail = GetUserEmail();
             try
             {
-                _userService.GetUserByEmail(userEmail);
+                return Ok(_userService.GetUserByEmail(userEmail));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            return Ok();
         }
         [HttpPost("login")]
         public ActionResult Login(LoginDto dto)
@@ -80,7 +78,7 @@ namespace IdentityApi.Controllers
         }
 
         [HttpGet("deliverers")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "Admin")]
         public ActionResult GetDeliverers()
         {
             return Ok(_userService.GetDeliverers());
@@ -138,6 +136,7 @@ namespace IdentityApi.Controllers
             return Ok();
         }
 
+        
         [NonAction]
         private string GetUserEmail()
         {

@@ -75,7 +75,7 @@ namespace IdentityApi.Services
                 if (user.Role == EUserRole.DELIVERER) userRole = "Deliverer";
 
                 claims.Add(new Claim(ClaimTypes.Role, userRole)); //Add user type to claim
-                claims.Add(new Claim(ClaimTypes.Name, user.Username));
+                claims.Add(new Claim(ClaimTypes.Name, user.Email));
                 //Kreiramo kredencijale za potpisivanje tokena. Token mora biti potpisan privatnim kljucem
                 //kako bi se sprecile njegove neovlascene izmene
                 SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey.Value));
@@ -112,6 +112,7 @@ namespace IdentityApi.Services
             if (dto.Approved)
             {
                 user.DelivererStatus = ERequestStatus.APPROVED;
+                user.Role = EUserRole.DELIVERER;
             }
             else
             {
@@ -132,6 +133,7 @@ namespace IdentityApi.Services
                 throw new Exception("Invalid status!");
 
             user.DelivererStatus = ERequestStatus.WAITING_FOR_RESPONSE;
+            _dbContext.SaveChanges();
         }
 
         public UserDto UpdateUser(string email, UpdateUserDto dto)

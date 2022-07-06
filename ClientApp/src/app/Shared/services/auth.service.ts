@@ -8,7 +8,7 @@ import { Token } from 'src/app/user/shared/token.model';
 export class AuthService {
 
   public authStateObservable = new BehaviorSubject<boolean>(localStorage.getItem('token') != null);
-  public roleStateObservable = new BehaviorSubject<string|null>(null);
+  public roleStateObservable = new BehaviorSubject<string|null>(localStorage.getItem('role'));
 
   constructor() { }
 

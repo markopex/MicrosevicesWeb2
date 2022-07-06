@@ -41,6 +41,7 @@ import { BasketItemProductComponent } from './basket/basket-item-product/basket-
 import {InputNumberModule} from 'primeng/inputnumber';
 import { BasketComponent } from './basket/basket/basket.component';
 import { BasketCheckoutComponent } from './basket/basket-checkout/basket-checkout.component';
+import {FileUploadModule} from 'primeng/fileupload';
 
 export function roleGetter(){
   return localStorage.getItem('role');
@@ -91,7 +92,8 @@ export function roleGetter(){
     OrderListModule,
     BrowserAnimationsModule,
     CalendarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    FileUploadModule
   ],
   providers: [
     {
