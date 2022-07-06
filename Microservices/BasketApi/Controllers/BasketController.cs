@@ -73,7 +73,10 @@ namespace BasketApi.Controllers
             try
             {
                 var basket = _basketService.GetBasket(email);
-                return Ok(_basketService.AddItemToBasket(email, item));
+                
+                // send message to order api
+                
+                return Ok();
             }
             catch (Exception ex)
             {
