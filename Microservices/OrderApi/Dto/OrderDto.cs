@@ -6,8 +6,8 @@ namespace OrderApi.Dto
     public class OrderDto
     {
         public int Id { get; set; }
-        public String CustomerUsername { get; set; }
-        public String DelivererUsername { get; set; }
+        public String Customer { get; set; }
+        public String Deliverer { get; set; }
         public List<OrderDetailDto> OrderDetails { get; set; }
         public String Comment { get; set; }
         public String Address { get; set; }
