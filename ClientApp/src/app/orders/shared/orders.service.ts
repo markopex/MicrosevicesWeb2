@@ -11,10 +11,6 @@ export class OrdersService {
 
   constructor( private http: HttpClient) { }
 
-  addOrder(order:NewOrder) :Observable<Order> {
-    return this.http.post<Order>(environment.serverUrl + '/orders', order);
-  }
-
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(environment.serverUrl + "/orders");
   }

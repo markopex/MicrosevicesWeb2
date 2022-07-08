@@ -1,2 +1,4 @@
 <p>order-list works!</p>
-<app-order></app-order>
+<div *ngFor="let order of orders">
+    <app-order [order]="order"></app-order>
+</div>

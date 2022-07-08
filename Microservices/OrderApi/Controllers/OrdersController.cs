@@ -37,7 +37,7 @@ namespace OrderApi.Controllers
                     orders = orders.FindAll(i => i.Customer.ToLower() == email.ToLower());
                     break;
                 case "Deliverer":
-                    orders = orders.FindAll(i => i.Deliverer.ToLower() == email.ToLower());
+                    orders = orders.FindAll(i => i.Deliverer == email.ToLower());
                     break;
                 case "Admin":
                     break;
