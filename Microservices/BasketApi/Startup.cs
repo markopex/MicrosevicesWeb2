@@ -81,7 +81,8 @@ namespace BasketApi
                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))//navodimo privatni kljuc kojim su potpisani nasi tokeni
                };
            });
-
+            services.AddHttpClient<IOrderService, OrderService>();
+            services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IBasketService, BasketService>();
         }
 

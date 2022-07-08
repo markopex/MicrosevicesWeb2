@@ -8,6 +8,7 @@
         public Order Order { get; set; }
         public uint Quantity { get; set; }
         public double ProductPrice { get; set; }
+        public string ProductName { get; set; }
         public double Price { get {return ProductPrice * Quantity; } }
     }
 }

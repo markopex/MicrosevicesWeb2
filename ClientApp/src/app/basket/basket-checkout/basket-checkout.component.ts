@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Basket } from '../shared/basket.model';
 import { BasketService } from '../shared/basket.service';
 
 @Component({
@@ -20,7 +22,7 @@ export class BasketCheckoutComponent implements OnInit {
     comment: new FormControl('', [ Validators.minLength(1), Validators.maxLength(100)]),
   });
 
-  constructor(private basketService: BasketService, private messageService: MessageService) { }
+  constructor(private basketService: BasketService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.basketService.totalObservable.subscribe(
@@ -34,11 +36,13 @@ export class BasketCheckoutComponent implements OnInit {
     this.basketService.checkout(this.checkoutForm.value).subscribe(
       data => {
         // erace previous basket
-
+        this.basketService.setBasket(new Basket()).subscribe(data => {});
+        this.messageService.add({severity:'success', summary: 'Success', detail: 'Order successfully created'});
+        this.router.navigateByUrl("/orders");
       },
       error =>{
         // show error
-
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to checkout'});
       }
     )
   }

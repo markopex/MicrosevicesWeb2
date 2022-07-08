@@ -24,7 +24,6 @@ namespace BasketApi.Services
                 basketItem.Quantity += item.Quantity;
             }
             baskets.Upsert(basket);
-            db.Commit();
 
             return basket;
         }
@@ -56,7 +55,7 @@ namespace BasketApi.Services
                 BasketItems = dto.BasketItems
             };
             baskets.Upsert(email, basket);
-            db.Commit();
+
             return basket;
         }
     }

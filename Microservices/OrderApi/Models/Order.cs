@@ -13,12 +13,12 @@ namespace OrderApi.Models
         public String Comment { get; set; }
         public String Address { get; set; }
         public double Price => OrderDetails.Sum(i => i.Price);
-        public long UTCTimeOrdered { get; set; }
+        public long UTCTimeOrderCreated { get; set; }
         public long UTCTimeDeliveryStarted { get; set; }
-        public int DeliveredTimeExpected { get; set; }
-        public DateTime TimeOrdered { get { return new DateTime(UTCTimeOrdered); } }
+        public long UTCTimeDeliveryExpected { get; set; }
+        public DateTime TimeOrdered { get { return new DateTime(UTCTimeOrderCreated); } }
         public DateTime TimeDeliveryStarted { get { return new DateTime(UTCTimeDeliveryStarted); } }
-        public DateTime TimeDeliveryExpected { get { return new DateTime(UTCTimeDeliveryStarted + DeliveredTimeExpected); } }
+        public DateTime TimeDeliveryExpected { get { return new DateTime(UTCTimeDeliveryStarted + UTCTimeDeliveryExpected); } }
 
     }
 }
