@@ -20,6 +20,6 @@ export class OrdersService {
   }
 
   takeDelivery(orderId: number): Observable<Object>{
-    return this.http.put<Object>(environment.serverUrl + '/orders/' + orderId + "/deliver", "");
+    return this.http.put<Object>(environment.serverUrl + '/orders/' + orderId, "");
   }
 }

@@ -42,9 +42,16 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import { BasketComponent } from './basket/basket/basket.component';
 import { BasketCheckoutComponent } from './basket/basket-checkout/basket-checkout.component';
 import {FileUploadModule} from 'primeng/fileupload';
+import { OrdersComponent } from './orders/orders/orders.component';
+import {TabViewModule} from 'primeng/tabview';
+import { CountdownConfig, CountdownGlobalConfig, CountdownModule } from 'ngx-countdown';
 
 export function roleGetter(){
   return localStorage.getItem('role');
+}
+
+function countdownConfigFactory(): CountdownConfig {
+  return { format: `mm:ss` };
 }
 
 
@@ -66,7 +73,8 @@ export function roleGetter(){
     BasketItemsComponent,
     BasketItemProductComponent,
     BasketComponent,
-    BasketCheckoutComponent
+    BasketCheckoutComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -93,14 +101,17 @@ export function roleGetter(){
     BrowserAnimationsModule,
     CalendarModule,
     InputTextareaModule,
-    FileUploadModule
+    FileUploadModule,
+    TabViewModule,
+    CountdownModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-      }
+      },
+      { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory }
   ],
   bootstrap: [AppComponent]
 })

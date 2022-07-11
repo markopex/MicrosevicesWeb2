@@ -1,4 +1,4 @@
-<p>order-list works!</p>
 <div *ngFor="let order of orders">
-    <app-order [order]="order"></app-order>
+    <app-order [ord]="order"></app-order>
 </div>
+<h3 *ngIf="orders.length == 0">No orders</h3>

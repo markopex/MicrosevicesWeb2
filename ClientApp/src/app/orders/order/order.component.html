@@ -6,18 +6,38 @@
         </div>
         <hr/>
         <div class="order-detail">
+            <p class="order-datail-title">Order address:</p>
+            <p>{{order?.address}}</p>
+        </div>
+        <hr/>
+        <div class="order-detail">
             <p class="order-datail-title">Order Date:</p>
+            <p>7 Februar 2022</p>
+        </div>
+        <hr/>
+        <div class="order-detail" *ngIf="true">
+            <p class="order-datail-title">Delivered Date:</p>
             <p>7 Februar 2022</p>
         </div>
         <hr/>
         <div class="order-detail">
             <p class="order-datail-title">Total amount:</p>
-            <p>1233 RSD</p>
+            <p>{{order?.price}}</p>
         </div>
     </div>
-    <div class="order-details-product-list">
-        <app-order-detail-product></app-order-detail-product>
-        <app-order-detail-product></app-order-detail-product>
-        <app-order-detail-product></app-order-detail-product>
+    <h5 *ngIf="order?.deliverer == null" style="text-align: center; background: grey; color: white; padding: 0.5em;">Order is waiting for deliverer</h5>
+    <h5  style="text-align: center; background: green; color: white; padding: 0.5em;">Order is delivered</h5>
+    <h5 *ngIf="secondsUntil != 0" style="text-align: center; background: rgb(255, 183, 0); color: white; padding: 0.5em;">Order is delivering. Time until delivery 
+        <countdown #cd [config]="{leftTime: secondsUntil}"> 
+        </countdown>
+    </h5>
+    <div>
+        <p *ngIf="order.comment != ''">Comment: {{order.comment}}</p>
+    </div>
+    <div class="order-details-product-list" *ngFor="let orderItem of order.orderDetails">
+        <app-order-detail-product [orderItem]="orderItem"></app-order-detail-product>
+    </div>
+    <div style="display: flex; flex-direction: row-reverse;" *ngIf="order.deliverer == null">
+        <button pButton pRipple type="button" label="Deliver this order" [loading]="isTaking" class="p-button-rounded" (click)="deliverOrder()"></button>
     </div>
 </div>

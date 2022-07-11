@@ -27,7 +27,7 @@ namespace OrderApi.Controllers
         [Authorize]
         public IActionResult GetOrders()
         {
-            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+                var claimsIdentity = this.User.Identity as ClaimsIdentity;
             var role = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
             var email = GetUserEmail();
             var orders = _orderService.GetOrders();
@@ -48,28 +48,11 @@ namespace OrderApi.Controllers
             return Ok(orders);
         }
         // GET: api/Order
-        [HttpGet("/waiting")]
+        [HttpGet("waiting")]
         [Authorize(Roles = "Deliverer")]
         public IActionResult GetPendingOrders()
         {
-            var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            var role = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
-            var email = GetUserEmail();
-            var orders = _orderService.GetOrders();
-            switch (role)
-            {
-                case "User":
-                    orders = orders.FindAll(i => i.Customer.ToLower() == email.ToLower());
-                    break;
-                case "Deliverer":
-                    orders = orders.FindAll(i => i.Deliverer.ToLower() == email.ToLower());
-                    break;
-                case "Admin":
-                    break;
-                default:
-                    orders = new List<OrderDto>();
-                    break;
-            }
+            var orders = _orderService.GetOrders().FindAll(i => i.Deliverer == null);
             return Ok(orders);
         }
 
@@ -112,6 +95,22 @@ namespace OrderApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("{id}/take")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> PostOrder(int id)
+        {
+            var email = GetUserEmail();
+            try
+            {
+                return Ok(_orderService.DeliverOrder(id, email));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
         [NonAction]

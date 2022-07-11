@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { OrderItem } from '../shared/order-item.model';
 
 @Component({
   selector: 'app-order-detail-product',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./order-detail-product.component.scss']
 })
 export class OrderDetailProductComponent implements OnInit {
+
+  @Input()
+  orderItem: OrderItem
 
   constructor() { }
 

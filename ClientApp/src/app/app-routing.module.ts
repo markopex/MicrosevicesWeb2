@@ -4,6 +4,7 @@ import { BasketItemsComponent } from './basket/basket-items/basket-items.compone
 import { BasketComponent } from './basket/basket/basket.component';
 import { OrderListComponent } from './orders/order-list/order-list.component';
 import { OrderComponent } from './orders/order/order.component';
+import { OrdersComponent } from './orders/orders/orders.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
 import { DeliverersListComponent } from './user/deliverers/deliverers-list/deliverers-list.component';
 import { LoginComponent } from './user/login/login.component';
@@ -16,7 +17,7 @@ const routes: Routes = [
   {path:'register',component: RegisterComponent},
   {path:'deliverers',component: DeliverersListComponent},
   {path:'card',component: BasketComponent},
-  {path:'orders',component: OrderListComponent},
+  {path:'orders',component: OrdersComponent},
   {path:'profile',component: ProfileComponent}
 ];
 

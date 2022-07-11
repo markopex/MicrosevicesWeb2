@@ -14,6 +14,6 @@ namespace OrderApi.Dto
         public double Price { get; set; }
         public long UTCTimeOrdered { get; set; }
         public long UTCTimeDeliveryStarted { get; set; }
-        public int DeliveredTimeExpected { get; set; }
+        public long UTCTimeDeliveryExpected { get; set; }
     }
 }
