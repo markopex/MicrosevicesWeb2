@@ -1,9 +1,11 @@
 <div style="display: flex; margin: 2em">
     <div class="order-details-product">
-        <img class="order-details-product-image" src="../../../assets/product-example.png"/>
+        <img class="order-details-product-image" src="https://cdn.iconscout.com/icon/free/png-256/fast-food-1851561-1569286.png"/>
     </div>
     <div class="order-details-product-title">
         <p>{{orderItem.productName}}</p>
         <p class="order-details-product-desc">Price: {{orderItem.productPrice}}</p>
+        <p class="order-details-product-desc">Quantity: {{orderItem.quantity}}</p>
+        <p class="order-details-product-desc">Total Price: {{orderItem.quantity * orderItem.productPrice}}</p>
     </div>
 </div>

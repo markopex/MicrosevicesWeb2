@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <p-card header="{{deliverer?.firstName + ' ' + deliverer?.lastName}}" subheader="{{deliverer?.email}}" [style]="{width: '360px'}" styleClass="p-card-shadow">
     <ng-template pTemplate="header">
-        <img alt="Card" src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png">
+        <img alt="Card" [src]="profileImageSrc">
     </ng-template>
     <p>
         {{deliverer?.address}}

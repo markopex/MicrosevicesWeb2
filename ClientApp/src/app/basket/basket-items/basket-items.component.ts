@@ -43,7 +43,7 @@ export class BasketItemsComponent implements OnInit {
       },
       error => {
         this.isUpdating = false;
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to update'});
+        this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
       }
     )
   }

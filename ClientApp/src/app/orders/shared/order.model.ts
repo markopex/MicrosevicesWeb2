@@ -8,7 +8,7 @@ export class Order {
     comment: string;
     address: string;
     price: number;
-    uTCTimeOrdered: number;
+    utcTimeOrderCreated: number;
     uTCTimeDeliveryStarted: number;
     utcTimeDeliveryExpected: number;
 }

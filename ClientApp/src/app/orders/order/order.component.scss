@@ -2,6 +2,8 @@
     border-radius: 10px;
     overflow: hidden;
     border-collapse: separate; 
+    margin-bottom: 2em;
+    background-color: rgb(242, 242, 242, 0.5);
     object-fit: contain;
 }
 
@@ -25,7 +27,6 @@
 .order-details-product-list{
     display: flex;
     flex-direction: column;
-    background-color: white;
     padding: 2em;
 }
 

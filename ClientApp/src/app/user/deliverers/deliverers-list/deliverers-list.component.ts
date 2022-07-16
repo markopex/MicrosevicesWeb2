@@ -9,12 +9,14 @@ import { UserService } from '../../shared/user.service';
 })
 export class DeliverersListComponent implements OnInit {
 
+  isLoading = true;
   deliverers: User[]
 
   constructor(private userService: UserService) { 
     this.userService.getDeliverers().subscribe(
       data =>{
         this.deliverers = data;
+        this.isLoading = false;
       }
     )
   }

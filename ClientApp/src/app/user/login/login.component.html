@@ -9,6 +9,9 @@
             <input id="float-input" type="password" pInputText formControlName="password"> 
             <label for="float-input">Password</label>
         </span>
-        <button pButton type="button" label="Login" [loading]="isLoading" (click)="login()"></button>
+        <div>
+            <button pButton type="button" label="Login" [loading]="isLoading" (click)="login()"></button>
+            <button pButton pRipple type="button" icon="pi pi-google" label="Google" class="p-button p-button-danger" (click)="loginWithGoogle()"></button>
+        </div>
     </form>
 </p-card>

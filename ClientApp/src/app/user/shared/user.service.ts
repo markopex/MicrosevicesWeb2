@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -16,7 +16,9 @@ export class UserService {
   login(login:Object) :Observable<Token> {
     return this.http.post<Token>(environment.serverUrl + '/login', login);
   }
-
+  googleLogin(login:Object) :Observable<Token> {
+    return this.http.post<Token>(environment.serverUrl + '/login-google', login);
+  }
   register(registration:Object) :Observable<Object> {
     return this.http.post<Object>(environment.serverUrl + '/register', registration);
   }
@@ -48,5 +50,33 @@ export class UserService {
     updateDelivererStatus.deliverer = deliverer;
     updateDelivererStatus.approved = false;
     return this.http.put<Object>(environment.serverUrl + "/users/deliverers", updateDelivererStatus);
+  }
+  uploadImage(image: FormData): Observable<Object>{
+    return this.http.post<Object>(environment.serverUrl + "/users/image", image);
+  }
+  getImage(): Observable<Blob>{
+    return this.http.get<Blob>(environment.serverUrl + "/users/image");
+  }
+  
+  downloadFile(): Observable<HttpEvent<Blob>> {
+    return this.http.request(new HttpRequest(
+      'GET',
+      environment.serverUrl + "/users/image/me",
+      null,
+      {
+        reportProgress: true,
+        responseType: 'blob'
+      }));
+  }
+
+  downloadImage(email: string): Observable<HttpEvent<Blob>> {
+    return this.http.request(new HttpRequest(
+      'GET',
+      environment.serverUrl + "/users/image?email="+email,
+      null,
+      {
+        reportProgress: true,
+        responseType: 'blob'
+      }));
   }
 }

@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
           this.router.navigateByUrl("/login")
         },
         error => {
-          this.messageService.add({severity:'error', summary: 'error', detail: 'Error occured during registration. Check form data.'});
+          this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
         }
       )
     }

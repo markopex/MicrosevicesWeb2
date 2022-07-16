@@ -38,9 +38,9 @@ namespace OrderApi.Services
             try
             {
                 //var customer = _dbContext.Users.Find(customerEmail.ToLower());
-                //var customerOrder = _dbContext.Orders.ToList().Find(i => i.CustomerUsername == customerEmail.ToLower() && i.DeliveredTimeExpected == 0);
-                //if (customerOrder != null)
-                //    throw new Exception("You can't create new order until you are waiting for order.");
+                var customerOrder = _dbContext.Orders.ToList().Find(i => i.Customer.ToLower() == customerEmail.ToLower() && i.UTCTimeDeliveryExpected == 0);
+                if (customerOrder != null)
+                    throw new Exception("You can't create new order until you are waiting for order.");
 
                 List<OrderDetail> orderDetailsList = new List<OrderDetail>();
                 var price = 0;
@@ -69,7 +69,7 @@ namespace OrderApi.Services
                 var order = _mapper.Map<Order>(orderDto);
                 order.OrderDetails = null;
                 order.Customer = customerEmail;
-                order.UTCTimeOrderCreated = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                order.UTCTimeOrderCreated = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 _dbContext.Add(order);
                 await _dbContext.SaveChangesAsync();
                 foreach (var orderDetail in orderDetailsList)
@@ -105,9 +105,9 @@ namespace OrderApi.Services
                 if (order.UTCTimeDeliveryExpected != 0)
                     throw new Exception("Delivering of given order is already started.");
 
-                order.UTCTimeDeliveryStarted = DateTimeOffset.Now.ToUnixTimeSeconds();
+                order.UTCTimeDeliveryStarted = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 Random rnd = new Random();
-                order.UTCTimeDeliveryExpected = (DateTimeOffset.Now.ToUnixTimeSeconds()) + rnd.Next(300, 600) * 1000;
+                order.UTCTimeDeliveryExpected = (DateTimeOffset.Now.ToUnixTimeMilliseconds()) + rnd.Next(300, 600) * 1000;
                 order.Deliverer = deliverer.ToLower();
                 _dbContext.SaveChanges();
 

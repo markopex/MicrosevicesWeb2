@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using OrderApi.Models;
 
 namespace OrderApi.Controllers
 {
@@ -73,7 +74,7 @@ namespace OrderApi.Controllers
                 return Ok(_orderService.DeliverOrder(id, email));
             }catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -107,7 +108,7 @@ namespace OrderApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 

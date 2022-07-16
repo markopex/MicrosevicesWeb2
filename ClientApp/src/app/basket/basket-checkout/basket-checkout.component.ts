@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -33,16 +34,20 @@ export class BasketCheckoutComponent implements OnInit {
   }
 
   checkout(){
+    this.isSending = true;
     this.basketService.checkout(this.checkoutForm.value).subscribe(
       data => {
+        this.isSending = false;
         // erace previous basket
         this.basketService.setBasket(new Basket()).subscribe(data => {});
+        this.basketService.totalObservable.next(0);
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Order successfully created'});
         this.router.navigateByUrl("/orders");
       },
-      error =>{
+      (error) =>{
+        this.isSending = false;
         // show error
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to checkout'});
+        this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
       }
     )
   }

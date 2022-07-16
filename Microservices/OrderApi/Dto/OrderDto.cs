@@ -11,8 +11,7 @@ namespace OrderApi.Dto
         public List<OrderDetailDto> OrderDetails { get; set; }
         public String Comment { get; set; }
         public String Address { get; set; }
-        public double Price { get; set; }
-        public long UTCTimeOrdered { get; set; }
+        public long UTCTimeOrderCreated { get; set; }
         public long UTCTimeDeliveryStarted { get; set; }
         public long UTCTimeDeliveryExpected { get; set; }
     }

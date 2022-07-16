@@ -14,7 +14,7 @@ namespace IdentityApi.Interfaces
         List<UserDto> GetDeliverers();
         bool UpdateDelivererStatus(UpdateStatusDto dto);
         void UpdatePendingStatus(string email, ERequestStatus status);
-
+        SuccessLoginDto LoginGoogle(GoogleLoginDto user);
 
     }
 }

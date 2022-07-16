@@ -1,5 +1,7 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/Shared/services/auth.service';
 import { User } from '../shared/user.model';
@@ -18,6 +20,7 @@ export class ProfileComponent implements OnInit {
   user: User;
   role = this.authService.roleStateObservable.value;
   isLoading = false;
+  isSavingEdit = false;
   isEditing = false;
   editUserForm = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]),
@@ -27,7 +30,7 @@ export class ProfileComponent implements OnInit {
     address: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
   });
 
-  constructor(private authService: AuthService, private userService: UserService, private messageService: MessageService) { 
+  constructor(private authService: AuthService, private userService: UserService, private messageService: MessageService, private sanitizer: DomSanitizer) { 
     this.loadUser();
     this.editUserForm.disable();
   }
@@ -54,6 +57,20 @@ export class ProfileComponent implements OnInit {
         this.user = data;
         data.birthdayDate = new Date(data.birthday);
         this.editUserForm.patchValue(data);
+        this.userService.downloadFile().subscribe(
+          data => {
+            if(data.type == HttpEventType.Response){
+              const downloadedFile = new Blob([data!.body!], { type: data!.body!.type });
+              let objectURL = URL.createObjectURL(downloadedFile);       
+              this.profileImg = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            }
+          },
+          error => {
+            console.log(error.error.text);
+            //let objectURL = URL.createObjectURL(error.text);       
+            //this.image = error.error.text;//this.sanitizer.bypassSecurityTrustUrl(objectURL);          
+          }
+        )
         //this.editUserForm.value.birthdayDate = new Date(data.birthday).toString();
       }
     )
@@ -61,15 +78,18 @@ export class ProfileComponent implements OnInit {
 
   saveChanges(){
     if(this.editUserForm.valid){
+      this.isSavingEdit = true;
       this.editUserForm.value.birthday = new Date(this.editUserForm.value.birthdayDate).getTime();
       this.userService.updateUser(this.editUserForm.value).subscribe(
         data => {
           this.messageService.add({severity:'success', summary: 'Success', detail: 'Changes saved.'});
           this.isEditing = false;
+          this.isSavingEdit = false;
           this.editUserForm.disable();
         },
         error => {
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to save changes'});
+          this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
+          this.isSavingEdit = false;
         }
       )
     }
@@ -87,22 +107,26 @@ export class ProfileComponent implements OnInit {
   }
 
   onUpload(event) {
-    this.uploadedFile = event.file;
-    console.log(event.get('file'));
-    const reader = new FileReader();
-    reader.onload = e => {
-      this.profileImg = reader.result;
-      console.log(this.profileImg);
-    }
+    const uploadData = new FormData();
+    uploadData.append('myFile', this.uploadedFile!, this.uploadedFile?.name);
+    this.userService.uploadImage(uploadData).subscribe(
+      data => {
 
-    reader.readAsDataURL(event.file);
+        this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
 
-    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+      },
+      error => {
+        console.log(error);
+      }
+    )
+}
+onSelectImage(event) {
+  this.uploadedFile = event.currentFiles[0];
+  this.profileImg = this.uploadedFile.objectURL;
 }
 
   apply(){
     this.isLoading = true;
-    console.log(123123);
     this.userService.apply().subscribe(
       data => {
         this.isLoading = false;
@@ -111,7 +135,7 @@ export class ProfileComponent implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to apply'});
+        this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
       }
     )
   }

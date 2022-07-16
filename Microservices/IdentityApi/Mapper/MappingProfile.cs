@@ -12,6 +12,7 @@ namespace IdentityApi.Mapping
             CreateMap<User, RegisterDto>().ReverseMap();
             CreateMap<User, LoginDto>().ReverseMap();
             CreateMap<User, UpdateUserDto>().ReverseMap();
+            CreateMap<User, GoogleLoginDto>().ReverseMap();
         }
     }
 }

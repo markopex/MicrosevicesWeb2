@@ -1,7 +1,10 @@
 <h1>User that applied for deliverer</h1>
-<div class="deliverers-list" *ngIf="deliverers?.length > 0">
-    <app-deliverer class="deliverer" *ngFor="let deliverer of deliverers" [deliverer]="deliverer"></app-deliverer>
+<div>
+    <div class="deliverers-list" *ngIf="deliverers?.length > 0">
+        <app-deliverer class="deliverer" *ngFor="let deliverer of deliverers" [userDeliverer]="deliverer"></app-deliverer>
+    </div>
+    <div *ngIf="deliverers?.length == 0">
+        <h4>No deliverers</h4>
+    </div>
 </div>
-<div *ngIf="deliverers?.length == 0">
-    <h4>No deliverers</h4>
-</div>
+<p-progressSpinner *ngIf="isLoading"></p-progressSpinner>

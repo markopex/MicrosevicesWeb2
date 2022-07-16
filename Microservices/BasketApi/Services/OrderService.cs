@@ -1,4 +1,5 @@
-﻿using BasketApi.Dto;
+﻿using System;
+using BasketApi.Dto;
 using BasketApi.Interfaces;
 using BasketApi.Models;
 using Microsoft.Net.Http.Headers;
@@ -42,9 +43,16 @@ namespace BasketApi.Services
                                                 "application/json");
 
             var responseString = await _httpClient.SendAsync(request);
+            if (responseString.IsSuccessStatusCode)
+            {
+                var order = JsonConvert.DeserializeObject<OrderDto>(await responseString.Content.ReadAsStringAsync());
+                return order;
+            }
+            else
+            {
+                throw new Exception(await responseString.Content.ReadAsStringAsync());
+            }
 
-            var order = JsonConvert.DeserializeObject<OrderDto>(await responseString.Content.ReadAsStringAsync());
-            return order;
         }
     }
 }

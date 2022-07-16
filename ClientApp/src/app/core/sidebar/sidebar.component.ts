@@ -10,6 +10,7 @@ import { AuthService } from '../../Shared/services/auth.service';
 export class SidebarComponent implements OnInit {
 
   isLoggedIn = this.authService.authStateObservable.value;
+  role = this.authService.roleStateObservable.value;
 
   constructor(private router: Router, private authService: AuthService) { }
 
@@ -19,6 +20,11 @@ export class SidebarComponent implements OnInit {
         this.isLoggedIn = value;
       }
     );
+    this.authService.roleStateObservable.subscribe(
+      value => {
+        this.role = value; 
+      }
+    )
   }
 
   logout(){

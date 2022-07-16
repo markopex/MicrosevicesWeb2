@@ -63,7 +63,7 @@ export class ProductListComponent implements OnInit {
         },
         error =>{
           this.isAdding = false;
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to add meal to menu'});
+          this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
         }
       )
     }

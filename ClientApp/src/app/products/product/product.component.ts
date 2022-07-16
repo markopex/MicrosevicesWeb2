@@ -36,7 +36,7 @@ export class ProductComponent implements OnInit {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Product added to basket:)'});
       },
       error=>{
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Unable to add product to basket:/'});
+        this.messageService.add({severity:'error', summary: 'Error', detail: error.error.message});
       }
     )
   }

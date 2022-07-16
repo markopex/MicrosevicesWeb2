@@ -45,6 +45,10 @@ import {FileUploadModule} from 'primeng/fileupload';
 import { OrdersComponent } from './orders/orders/orders.component';
 import {TabViewModule} from 'primeng/tabview';
 import { CountdownConfig, CountdownGlobalConfig, CountdownModule } from 'ngx-countdown';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { GoogleLoginProvider } from 'angularx-social-login';
+import { JwtModule } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 export function roleGetter(){
   return localStorage.getItem('role');
@@ -53,7 +57,9 @@ export function roleGetter(){
 function countdownConfigFactory(): CountdownConfig {
   return { format: `mm:ss` };
 }
-
+export function tokenGetter() {
+  return localStorage.getItem("token");
+}
 
 @NgModule({
   declarations: [
@@ -103,7 +109,16 @@ function countdownConfigFactory(): CountdownConfig {
     InputTextareaModule,
     FileUploadModule,
     TabViewModule,
-    CountdownModule
+    CountdownModule,
+    ProgressSpinnerModule,
+    JwtModule.forRoot(
+      {
+        config:{
+          tokenGetter: tokenGetter,
+          allowedDomains: environment.allowedDomains
+        }
+      }
+    )
   ],
   providers: [
     {
@@ -111,7 +126,19 @@ function countdownConfigFactory(): CountdownConfig {
       useClass: AuthInterceptor,
       multi: true,
       },
-      { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory }
+      { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory },
+      {
+        provide: 'SocialAuthServiceConfig',
+        useValue: {
+          autoLogin: true,
+          providers: [
+            {
+              id: GoogleLoginProvider.PROVIDER_ID,
+              provider: new GoogleLoginProvider('148517665605-jspahbqleats6lvlag9kasc2c11b5g7o.apps.googleusercontent.com')
+            }
+          ]
+        }
+      }
   ],
   bootstrap: [AppComponent]
 })

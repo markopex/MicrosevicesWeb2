@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EventService } from 'src/app/Shared/event.service';
 import { AuthService } from 'src/app/Shared/services/auth.service';
 
 @Component({
@@ -7,6 +8,7 @@ import { AuthService } from 'src/app/Shared/services/auth.service';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  
 
   role: string = "";
 
@@ -19,6 +21,7 @@ export class OrdersComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    
   }
 
 }

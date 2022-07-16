@@ -27,7 +27,7 @@
                 <input id="float-input" type="text" pInputText formControlName="address" [style]="{width: '100%'}" required> 
                 <label for="float-input">Address</label>
             </span>
-            <button *ngIf="!isEditing" pButton type="button" label="Edit" [loading]="isLoading" (click)="edit()"></button>
+            <button *ngIf="!isEditing" pButton type="button" label="Edit" [loading]="isSavingEdit" (click)="edit()"></button>
             <span class="p-buttonset" *ngIf="isEditing">
                 <button pButton pRipple label="Save" icon="pi pi-check" (click)="saveChanges()"></button>
                 <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="cancelEdit()"></button>
@@ -40,7 +40,7 @@
                 <img alt="Card" [src]="profileImg">
             </ng-template>
             <div>
-                <p-fileUpload mode="basic" name="demo[]" accept="image/*" [multiple]="false" [maxFileSize]="1000000" (onBeforeUpload)="onUpload($event)"></p-fileUpload>
+                <p-fileUpload mode="basic" name="demo[]" accept="image/*" [multiple]="false" [maxFileSize]="10000000" (onBeforeUpload)="onUpload($event)" (onSelect)="onSelectImage($event)"></p-fileUpload>
             </div>
         </p-card>
         <div style="display: flex; justify-content: center; padding-top: 1em;">

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { EventService } from 'src/app/Shared/event.service';
 import { Order } from '../shared/order.model';
 import { OrdersService } from '../shared/orders.service';
 
@@ -12,6 +13,11 @@ export class OrderListComponent implements OnInit {
   @Input('filter') set setFilter(filter: string){
     this.filter = filter;
     console.log(this.filter);
+    this.loadData();
+  }
+  filter: string;
+
+  loadData(){
     if(this.filter != 'waiting-orders'){
       this.orderService.getOrders().subscribe(
         data => {
@@ -20,8 +26,15 @@ export class OrderListComponent implements OnInit {
             this.orders = data.filter(i => i.utcTimeDeliveryExpected != 0 && i.utcTimeDeliveryExpected <= new Date().getTime());
           }
           if(this.filter == 'active'){
-            this.orders = data.filter(i => i.utcTimeDeliveryExpected != 0 && i.utcTimeDeliveryExpected > new Date().getTime());
+            this.orders = data.filter(i => (i.utcTimeDeliveryExpected != 0 && i.utcTimeDeliveryExpected > new Date().getTime()) || (i.utcTimeDeliveryExpected == 0));
           }
+          this.orders.forEach(element => {
+            let sum = 0;
+            element.orderDetails.forEach( orderItem => {
+              sum += orderItem.price;
+            });
+            element.price = sum;
+          });
         }
       )
     }else{
@@ -33,13 +46,17 @@ export class OrderListComponent implements OnInit {
       )
     }
   }
-  filter: string;
 
   orders: Order[] = [];
-  constructor(private orderService: OrdersService) {
+  constructor(private orderService: OrdersService, private eventService: EventService) {
    }
 
   ngOnInit(): void {
+    this.eventService.eventObservable.subscribe(
+      data => {
+        this.loadData();
+      }
+    )
   }
 
 }

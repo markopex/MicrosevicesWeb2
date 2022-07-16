@@ -35,7 +35,7 @@ namespace BasketApi.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new {message = ex.Message});
             }
         }
 
@@ -50,7 +50,7 @@ namespace BasketApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new {message = ex.Message});
             }
         }
 
@@ -65,7 +65,7 @@ namespace BasketApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new {message = ex.Message});
             }
         }
 
@@ -81,11 +81,12 @@ namespace BasketApi.Controllers
                 // send message to order api
 
                 var orderDto = await _orderService.CreateOrder(basket, dto, _bearer_token);
+                
                 return Ok(orderDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new {message = ex.Message});
             }
         }
 
